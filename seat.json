@@ -1,0 +1,50 @@
+[
+  {
+    "model": "voting.seat",
+    "pk": 1,
+    "fields": {
+      "name" : "Seat1",
+      "state": 1
+    }
+  },
+  {
+    "model": "voting.seat",
+    "pk": 2,
+    "fields": {
+      "name" : "Seat2",
+      "state": 1
+    }
+  },
+  {
+    "model": "voting.seat",
+    "pk": 3,
+    "fields": {
+      "name" : "Seat3",
+      "state": 2
+    }
+  },
+  {
+    "model": "voting.seat",
+    "pk": 4,
+    "fields": {
+      "name" : "Seat4",
+      "state": 2
+    }
+  },
+  {
+    "model": "voting.seat",
+    "pk": 5,
+    "fields": {
+      "name" : "Seat5",
+      "state": 2
+    }
+  },
+  {
+    "model": "voting.seat",
+    "pk": 6,
+    "fields": {
+      "name" : "Seat6",
+      "state": 2
+    }
+  }
+]
