@@ -5,13 +5,18 @@ from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager
 )
 
+
+class State(models.Model):
+    name = models.CharField(max_length=200)
+
+class Seat(models.Model):
+    name = models.CharField(max_length=200)
+
 class Party(models.Model):
     name = models.CharField(max_length=200)
     num_seats_won = models.IntegerField(default=0)
 
 SEX = (('M', 'MALE'), ('F', 'FEMALE'))
-
-
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, first_name, last_name, date_of_birth, sex, is_election_staff, voter_id, password=None):
@@ -48,6 +53,7 @@ class CustomUser(AbstractBaseUser):
     sex = models.CharField(choices=SEX, max_length=10)
     is_election_staff = models.BooleanField(default=True)
     voter_id = models.CharField(max_length=40, unique=True)
+    # seat = models.ForeignKey(Seat)
 
     USERNAME_FIELD = 'voter_id'
 
