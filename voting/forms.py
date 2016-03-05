@@ -3,13 +3,22 @@ from django.utils.translation import ugettext_lazy as _
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from models import CustomUser
+from models import CustomUser, State, Booth
 import pdb
 
 class RegistrationForm(UserCreationForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""
 
+    def __init__(self, *args, **kwargs):
+      super(RegistrationForm, self).__init__(*args, **kwargs)
+
+      # check state in POST data and change qs
+      if 'state' in self.data:
+          self.fields['booth'].queryset = Booth.objects.filter(seat=self.data.get('state'))
+
+    state = forms.ModelChoiceField(State.objects.all())
+    booth = forms.ModelChoiceField(Booth.objects.none())
     first_name = forms.RegexField(regex=r'^\w+$', widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("First name"), error_messages={ 'invalid': _("This value must contain only letters") })
     last_name = forms.RegexField(regex=r'^\w+$', widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Last name"), error_messages={ 'invalid': _("This value must contain only letters") })
     password1 = forms.CharField(widget=forms.PasswordInput(attrs=dict(required=True, max_length=30, render_value=False)), label=_("Password"))
@@ -21,7 +30,7 @@ class RegistrationForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ['first_name', 'last_name', 'voter_id', 'date_of_birth', 'sex', 'is_election_staff']
+        fields = ['state', 'booth', 'first_name', 'last_name', 'voter_id', 'date_of_birth', 'sex', 'is_election_staff']
 
 
     def clean_username(self):
@@ -42,6 +51,7 @@ class RegistrationForm(UserCreationForm):
 
     def save(self, commit=True):
         # Save the provided password in hashed format
+        pdb.set_trace()
         user = super(RegistrationForm, self).save(commit=False)
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
@@ -50,6 +60,7 @@ class RegistrationForm(UserCreationForm):
         user.voter_id = self.cleaned_data['voter_id']
         user.is_election_staff = self.cleaned_data['is_election_staff']
         user.username = user.voter_id
+        user.booth = self.cleaned_data['booth']
         # user.set_password(self.cleaned_data['password1'])
 
         if commit:

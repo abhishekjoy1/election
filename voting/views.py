@@ -6,12 +6,14 @@ from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
+from rest_framework import generics
 import pdb
 
 @csrf_protect
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
+        pdb.set_trace()
         if form.is_valid():
             print "In register request = "+ str(request.POST)
             form.save()
@@ -45,7 +47,18 @@ def home(request):
 
 
 from rest_framework import viewsets
-from voting.serializers import CustomUserSerializer
+from voting.serializers import CustomUserSerializer, StateSerializer, BoothSerializer
 class CustomUserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all().order_by('voter_id')
     serializer_class = CustomUserSerializer
+
+class StateViewSet(viewsets.ModelViewSet):
+    queryset = State.objects.all().order_by('name')
+    serializer_class = StateSerializer
+
+class BoothViewSet(viewsets.ModelViewSet):
+    serializer_class = BoothSerializer
+
+    def get_queryset(self):
+        state = self.request.GET['state_id']
+        return Booth.objects.filter(seat=state)

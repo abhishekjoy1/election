@@ -5,6 +5,9 @@ from .views import *
 
 router = routers.DefaultRouter()
 router.register(r'users', views.CustomUserViewSet)
+router.register(r'states', views.StateViewSet)
+router.register(r'booths', views.BoothViewSet, base_name="Booth")
+
 
 urlpatterns = [
     # url(r'^$', views.index, name='index'),

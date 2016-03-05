@@ -5,16 +5,37 @@ from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager
 )
 
+class StateManager(models.Manager):
+    def get_by_natural_key(self, id):
+        return self.get(pk=id)
 
 class State(models.Model):
     name = models.CharField(max_length=200)
+    objects = StateManager()
+
+    def __str__(self):
+        return "%s" % (self.name)
 
 class Seat(models.Model):
     name = models.CharField(max_length=200)
+    state = models.ForeignKey(State)
+
+    def __str__(self):
+        return "%s" % (self.name)
+
+class Booth(models.Model):
+    name = models.CharField(max_length=200)
+    seat = models.ForeignKey(Seat)
+
+    def __str__(self):
+        return "%s" % (self.name)
 
 class Party(models.Model):
     name = models.CharField(max_length=200)
     num_seats_won = models.IntegerField(default=0)
+
+    def __str__(self):
+        return "%s" % (self.name)
 
 SEX = (('M', 'MALE'), ('F', 'FEMALE'))
 
@@ -53,7 +74,7 @@ class CustomUser(AbstractBaseUser):
     sex = models.CharField(choices=SEX, max_length=10)
     is_election_staff = models.BooleanField(default=True)
     voter_id = models.CharField(max_length=40, unique=True)
-    # seat = models.ForeignKey(Seat)
+    booth = models.ForeignKey(Booth)
 
     USERNAME_FIELD = 'voter_id'
 

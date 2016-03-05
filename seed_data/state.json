@@ -1,0 +1,44 @@
+[
+  {
+    "model": "voting.state",
+    "pk": 1,
+    "fields": {
+      "name" : "State1"
+    }
+  },
+  {
+    "model": "voting.state",
+    "pk": 2,
+    "fields": {
+      "name" : "State2"
+    }
+  },
+  {
+    "model": "voting.state",
+    "pk": 3,
+    "fields": {
+      "name" : "State3"
+    }
+  },
+  {
+    "model": "voting.state",
+    "pk": 4,
+    "fields": {
+      "name" : "State4"
+    }
+  },
+  {
+    "model": "voting.state",
+    "pk": 5,
+    "fields": {
+      "name" : "State5"
+    }
+  },
+  {
+    "model": "voting.state",
+    "pk": 6,
+    "fields": {
+      "name" : "State6"
+    }
+  }
+]
