@@ -9,6 +9,22 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 $('.datepicker').datepicker();
+                 $('#id_state').on('change', function() {
+                    alert(this.value );
+                    $.ajax({
+                        url: '/voting/api/booths/',
+                        dataType: 'json',
+                        type: 'GET',
+                        data: {state_id : $('#id_state').val()},
+                        success: function(data) {
+                            $('#id_booth').empty();
+                            for (row in data) {
+                                $('#id_booth').append($('<option></option>').attr('value', data[row].id).text(data[row].name));
+                            }
+                        }
+                    });
+                });
+
             });
         </script>
     </head>
