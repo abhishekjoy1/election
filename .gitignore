@@ -11,3 +11,5 @@ ops*/profiles/
 */*.iml
 *.iml
 .idea/
+.idea/*.*
+*.pyc

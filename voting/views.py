@@ -47,7 +47,9 @@ def home(request):
 
 
 from rest_framework import viewsets
-from voting.serializers import CustomUserSerializer, StateSerializer, BoothSerializer
+from voting.serializers import CustomUserSerializer, StateSerializer, SeatSerializer, BoothSerializer
+from .models import *
+
 class CustomUserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all().order_by('voter_id')
     serializer_class = CustomUserSerializer
@@ -56,9 +58,20 @@ class StateViewSet(viewsets.ModelViewSet):
     queryset = State.objects.all().order_by('name')
     serializer_class = StateSerializer
 
+class SeatViewSet(viewsets.ModelViewSet):
+    serializer_class = SeatSerializer
+
+    def get_queryset(self):
+        if 'state_id' in self.request.GET:
+            state = self.request.GET['state_id']
+            return Seat.objects.filter(state=state)
+        return Seat.objects.all()
+
 class BoothViewSet(viewsets.ModelViewSet):
     serializer_class = BoothSerializer
 
     def get_queryset(self):
-        state = self.request.GET['state_id']
-        return Booth.objects.filter(seat=state)
+        if 'state_id' in self.request.GET:
+            state = self.request.GET['state_id']
+            return Booth.objects.filter(seat=state)
+        return Booth.objects.all()
