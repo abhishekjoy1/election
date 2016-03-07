@@ -71,7 +71,7 @@ class BoothViewSet(viewsets.ModelViewSet):
     serializer_class = BoothSerializer
 
     def get_queryset(self):
-        if 'state_id' in self.request.GET:
-            state = self.request.GET['state_id']
-            return Booth.objects.filter(seat=state)
+        if 'seat_id' in self.request.GET:
+            seat = self.request.GET['seat_id']
+            return Booth.objects.filter(seat=seat)
         return Booth.objects.all()

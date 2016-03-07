@@ -9,13 +9,28 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 $('.datepicker').datepicker();
-                 $('#id_state').on('change', function() {
-                    alert(this.value );
+                $('#id_state').on('change', function() {
+                    $.ajax({
+                        url: '/voting/api/seats/',
+                        dataType: 'json',
+                        type: 'GET',
+                        data: {state_id : $('#id_state').val()},
+                        success: function(data) {
+                            $('#id_seat').empty();
+                            for (row in data) {
+                                $('#id_seat').append($('<option></option>').attr('value', data[row].id).text(data[row].name));
+                            }
+                            $('#id_seat').trigger("change");
+                        }
+                    });
+                });
+
+                $('#id_seat').on('change', function() {
                     $.ajax({
                         url: '/voting/api/booths/',
                         dataType: 'json',
                         type: 'GET',
-                        data: {state_id : $('#id_state').val()},
+                        data: {seat_id : $('#id_seat').val()},
                         success: function(data) {
                             $('#id_booth').empty();
                             for (row in data) {

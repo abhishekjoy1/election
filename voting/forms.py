@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from models import CustomUser, State, Booth
+from models import CustomUser, State, Seat, Booth
 import pdb
 
 class RegistrationForm(UserCreationForm):
@@ -15,9 +15,12 @@ class RegistrationForm(UserCreationForm):
 
       # check state in POST data and change qs
       if 'state' in self.data:
-          self.fields['booth'].queryset = Booth.objects.filter(seat=self.data.get('state'))
+          self.fields['seat'].queryset = Seat.objects.filter(state=self.data.get('state'))
+      if 'seat' in self.data:
+          self.fields['booth'].queryset = Booth.objects.filter(seat=self.data.get('seat'))
 
     state = forms.ModelChoiceField(State.objects.all())
+    seat = forms.ModelChoiceField(Seat.objects.none())
     booth = forms.ModelChoiceField(Booth.objects.none())
     first_name = forms.RegexField(regex=r'^\w+$', widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("First name"), error_messages={ 'invalid': _("This value must contain only letters") })
     last_name = forms.RegexField(regex=r'^\w+$', widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Last name"), error_messages={ 'invalid': _("This value must contain only letters") })
@@ -30,7 +33,7 @@ class RegistrationForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ['state', 'booth', 'first_name', 'last_name', 'voter_id', 'date_of_birth', 'sex', 'is_election_staff']
+        fields = ['state', 'seat', 'booth', 'first_name', 'last_name', 'voter_id', 'date_of_birth', 'sex', 'is_election_staff']
 
 
     def clean_username(self):
