@@ -75,6 +75,7 @@ class CustomUser(AbstractBaseUser):
     is_election_staff = models.BooleanField(default=True)
     voter_id = models.CharField(max_length=40, unique=True)
     booth = models.ForeignKey(Booth)
+    casted_vote = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'voter_id'
 

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Voting Page{% endblock %}
+{% block head %}Cast Your Vote Here{% endblock %}
+{% block content %}
+    <form method="post" action=".">{% csrf_token %}
+        <table border="0">
+            <tr><th><label for="id_party">Party Name:</label></th>
+                <td>
+                 <select name="party_name">
+                    {% for party in parties %}
+                        <option value="{{ party.id }}">{{ party.name }}</option>
+                    {% endfor %}
+                 </select>
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" name="next" value="/voting/home" />
+    </form>
+{% endblock %}

@@ -40,11 +40,21 @@ def logout_page(request):
 
 @login_required
 def home(request):
+    pdb.set_trace()
     return render_to_response(
     'home.html',
     { 'user': request.user }
     )
 
+@login_required
+def vote(request):
+    return render_to_response(
+    'cast_vote.html',
+    { 'user': request.user,
+      'parties': Party.objects.all()
+    },
+    context_instance=RequestContext(request)
+    )
 
 from rest_framework import viewsets
 from voting.serializers import CustomUserSerializer, StateSerializer, SeatSerializer, BoothSerializer
