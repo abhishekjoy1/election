@@ -2,7 +2,7 @@
 {% block title %}Voting Page{% endblock %}
 {% block head %}Cast Your Vote Here{% endblock %}
 {% block content %}
-    <form method="post" action=".">{% csrf_token %}
+    <form method="post" action="/voting/vote/">{% csrf_token %}
         <table border="0">
             <tr><th><label for="id_party">Party Name:</label></th>
                 <td>
@@ -12,8 +12,11 @@
                     {% endfor %}
                  </select>
                 </td>
+                <td><input type="hidden" name="user" value="{{ user }}"></td>
+                <td>
+                   <input type="submit" value="Submit">
+                </td>
             </tr>
         </table>
-        <input type="hidden" name="next" value="/voting/home" />
     </form>
 {% endblock %}

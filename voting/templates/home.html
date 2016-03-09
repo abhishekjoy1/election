@@ -2,8 +2,8 @@
 {% block title %}Welcome to Election System{% endblock %}
 {% block head %}Welcome to Election System{% endblock %}
 {% block content %}
-    <p>Welcome {{ user.voter_id}} !!!</p>
-    {% if user.is_election_staff == False %}
+    <p>Welcome {{ user.voter_id}} !!</p>
+    {% if user.is_election_staff == False and user.casted_vote == False %}
         <p><a href="/voting/vote/">Cast your vote</a></p>
     {% endif %}
     <a href="/voting/logout/">Logout</a>
