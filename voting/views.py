@@ -7,6 +7,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from rest_framework import generics
+from django.conf import settings
 from .models import *
 import os, pdb
 
@@ -82,7 +83,8 @@ def vote(request):
     if user.casted_vote:
         return render_to_response(
             'home.html',
-            { 'user': request.user }
+            { 'user': request.user },
+            context_instance=RequestContext(request)
         )
     return render_to_response(
         'cast_vote.html',
@@ -91,6 +93,15 @@ def vote(request):
         },
         context_instance=RequestContext(request)
     )
+
+@login_required
+def update_election_status(request):
+    # return HttpResponse("")
+    pdb.set_trace()
+    if request.method == 'POST':
+        settings.IS_ELECTION_DONE = True
+        return HttpResponse("<a href='/voting/count_vote/'>Count Votes</a>")
+
 
 from rest_framework import viewsets
 from voting.serializers import CustomUserSerializer, StateSerializer, SeatSerializer, BoothSerializer

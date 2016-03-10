@@ -19,4 +19,5 @@ urlpatterns = [
     url(r'^register/success/$', register_success),
     url(r'^home/$', home),
     url(r'^vote/$', vote),
+    url(r'^update_election_status/$', update_election_status)
 ]

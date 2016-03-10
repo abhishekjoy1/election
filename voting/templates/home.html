@@ -2,9 +2,14 @@
 {% block title %}Welcome to Election System{% endblock %}
 {% block head %}Welcome to Election System{% endblock %}
 {% block content %}
+{% csrf_token %}
     <p>Welcome {{ user.voter_id}} !!</p>
     {% if user.is_election_staff == False and user.casted_vote == False %}
         <p><a href="/voting/vote/">Cast your vote</a></p>
+    {% endif %}
+    {% if user.is_election_staff %}
+        <p><input type="checkbox" name="is_election_done" id="election_done">Is election done?<br></p>
+        <div id="count_vote"></div>
     {% endif %}
     <a href="/voting/logout/">Logout</a>
 {% endblock %}

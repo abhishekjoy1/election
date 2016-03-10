@@ -8,6 +8,21 @@
         <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
+                function getCookie(name) {
+                    var cookieValue = null;
+                    if (document.cookie && document.cookie != '') {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                    return cookieValue;
+                }
                 $('.datepicker').datepicker();
                 $('#id_state').on('change', function() {
                     $.ajax({
@@ -40,6 +55,22 @@
                     });
                 });
 
+               $('#election_done').click(function() {
+                    if($(this).is(":checked")) {
+                        $.ajax({
+                           url: '/voting/update_election_status/',
+                           type: 'POST',
+                            beforeSend: function(xhr) {
+                              xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                            },
+                           success: function(data) {
+                                $('#count_vote').html(data);
+                           }
+                        });
+                    }else{
+                        $('#count_vote').remove();
+                    }
+               });
             });
         </script>
     </head>
