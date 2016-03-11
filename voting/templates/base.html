@@ -54,9 +54,14 @@
                         }
                     });
                 });
-
+               flag = false;
                $('#election_done').click(function() {
-                    if($(this).is(":checked")) {
+                    if(flag == false){
+                        flag = true;
+                    }else{
+                        flag = false;
+                    }
+                    if(flag == true) {
                         $.ajax({
                            url: '/voting/update_election_status/',
                            type: 'POST',
@@ -68,10 +73,11 @@
                            }
                         });
                     }else{
-                        $('#count_vote').remove();
+                        $('#count_vote').empty();
                     }
                });
             });
+
         </script>
     </head>
     <body>

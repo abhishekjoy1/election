@@ -54,7 +54,6 @@ class RegistrationForm(UserCreationForm):
 
     def save(self, commit=True):
         # Save the provided password in hashed format
-        pdb.set_trace()
         user = super(RegistrationForm, self).save(commit=False)
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']

@@ -15,7 +15,6 @@ import os, pdb
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
-        pdb.set_trace()
         if form.is_valid():
             print "In register request = "+ str(request.POST)
             form.save()
@@ -42,16 +41,17 @@ def logout_page(request):
 
 @login_required
 def home(request):
-    pdb.set_trace()
     return render_to_response(
     'home.html',
-    { 'user': request.user }
+    { 'user': request.user,
+      'is_election_done' : settings.IS_ELECTION_DONE
+    },
+    context_instance=RequestContext(request)
     )
 
 @login_required
 def vote(request):
     if request.method == 'POST':
-        pdb.set_trace()
         user = CustomUser.objects.get(voter_id=request.POST['user'])
         user.casted_vote = True
         user.save()
@@ -77,13 +77,18 @@ def vote(request):
 
         return render_to_response(
         'home.html',
-        { 'user': request.user }
+        { 'user': request.user,
+          'is_election_done' : settings.IS_ELECTION_DONE
+        },
+        context_instance=RequestContext(request)
         )
     user = request.user
     if user.casted_vote:
         return render_to_response(
             'home.html',
-            { 'user': request.user },
+            { 'user': request.user,
+              'is_election_done' : settings.IS_ELECTION_DONE
+            },
             context_instance=RequestContext(request)
         )
     return render_to_response(
@@ -96,10 +101,8 @@ def vote(request):
 
 @login_required
 def update_election_status(request):
-    # return HttpResponse("")
-    pdb.set_trace()
     if request.method == 'POST':
-        settings.IS_ELECTION_DONE = True
+        settings.IS_ELECTION_DONE = not settings.IS_ELECTION_DONE
         return HttpResponse("<a href='/voting/count_vote/'>Count Votes</a>")
 
 
