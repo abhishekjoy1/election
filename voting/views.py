@@ -136,15 +136,21 @@ def count_vote(request):
             cmd = "hadoop jar VoteCount.jar "+ "/user/joy/Seat"+seat_id + " " + "/user/joy/"+hadoop_output_dir
             flag = os.system(cmd)
             if not flag:
+                seat = Seat.objects.get(pk=seat_id)
+                seat.vote_counted = True
+                seat.save()
                 return HttpResponse("success")
         return HttpResponse("failure")
-    return render_to_response(
-        "count_votes.html",
-        { 'user': request.user,
-          'seats': Seat.objects.all()
-        },
-        context_instance=RequestContext(request)
-    )
+    seats = Seat.objects.all(vote_counted=False)
+    if len(seats) > 0:
+        return render_to_response(
+            "count_votes.html",
+            { 'user': request.user,
+            'seats': Seat.objects.all(vote_counted=False)
+            },
+            context_instance=RequestContext(request)
+        )
+    return HttpResponse("vote counting for all seats are over")
 
 from rest_framework import viewsets
 from voting.serializers import CustomUserSerializer, StateSerializer, SeatSerializer, BoothSerializer
