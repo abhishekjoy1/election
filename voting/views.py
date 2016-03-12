@@ -119,6 +119,33 @@ def update_election_status(request):
         return HttpResponse("<a href='/voting/count_vote/'>Count Votes</a>")
 
 
+@login_required
+def count_vote(request):
+    pdb.set_trace()
+    if request.method == 'POST':
+        seat_id = request.POST['seat_id']
+        hadoop_input_dir = 'voting_data/Seat'+seat_id+'/'
+
+        if not os.path.exists(hadoop_input_dir):
+            return HttpResponse("It seems no voting has been done under given seat")
+        hadoop_output_dir = 'Result_Seat'+seat_id
+        pdb.set_trace()
+        cmd = "hadoop fs -put "+ hadoop_input_dir + " /user/joy/"
+        flag = os.system(cmd)
+        if not flag:
+            cmd = "hadoop jar VoteCount.jar "+ "/user/joy/Seat"+seat_id + " " + "/user/joy/"+hadoop_output_dir
+            flag = os.system(cmd)
+            if not flag:
+                return HttpResponse("success")
+        return HttpResponse("failure")
+    return render_to_response(
+        "count_votes.html",
+        { 'user': request.user,
+          'seats': Seat.objects.all()
+        },
+        context_instance=RequestContext(request)
+    )
+
 from rest_framework import viewsets
 from voting.serializers import CustomUserSerializer, StateSerializer, SeatSerializer, BoothSerializer
 from .models import *
