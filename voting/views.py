@@ -144,7 +144,10 @@ def result_count(request):
     if len(seats) > 0:
         seat_names = seats.values("name")
         return HttpResponse("Counting is over for "+str(seat_names))
-    return HttpResponseRedirect('/voting/result_count/')
+    return render_to_response(
+        "result_seat.html",
+        context_instance=RequestContext(request)
+    )
 
 
 from rest_framework import viewsets
