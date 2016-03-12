@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'djcelery',
     'voting.apps.VotingConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -126,3 +127,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'voting.CustomUser'
+
+import djcelery
+djcelery.setup_loader()
+BROKER_URL = 'redis://localhost:6379/0'
+CELERY_IMPORTS = ('voting.tasks')

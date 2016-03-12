@@ -124,29 +124,15 @@ def count_vote(request):
     pdb.set_trace()
     if request.method == 'POST':
         seat_id = request.POST['seat_id']
-        hadoop_input_dir = 'voting_data/Seat'+seat_id+'/'
-
-        if not os.path.exists(hadoop_input_dir):
-            return HttpResponse("It seems no voting has been done under given seat")
-        hadoop_output_dir = 'Result_Seat'+seat_id
-        pdb.set_trace()
-        cmd = "hadoop fs -put "+ hadoop_input_dir + " /user/joy/"
-        flag = os.system(cmd)
-        if not flag:
-            cmd = "hadoop jar VoteCount.jar "+ "/user/joy/Seat"+seat_id + " " + "/user/joy/"+hadoop_output_dir
-            flag = os.system(cmd)
-            if not flag:
-                seat = Seat.objects.get(pk=seat_id)
-                seat.vote_counted = True
-                seat.save()
-                return HttpResponse("success")
-        return HttpResponse("failure")
-    seats = Seat.objects.all(vote_counted=False)
+        from voting.tasks import seat_count
+        seat_count.delay(seat_id)
+        return HttpResponse("Job put in asynchronous queue")
+    seats = Seat.objects.filter(vote_counted=False)
     if len(seats) > 0:
         return render_to_response(
             "count_votes.html",
             { 'user': request.user,
-            'seats': Seat.objects.all(vote_counted=False)
+              'seats': seats
             },
             context_instance=RequestContext(request)
         )
