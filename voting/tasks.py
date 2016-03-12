@@ -13,6 +13,10 @@ def seat_count(seat_id):
         cmd = "hadoop jar VoteCount.jar "+ "/user/joy/Seat"+seat_id + " " + "/user/joy/"+hadoop_output_dir
         flag = os.system(cmd)
         if not flag:
+            cmd = "hadoop fs -ls /user/joy/"+hadoop_output_dir
+            flag = os.system(cmd)
+            while(flag):
+                flag = os.system(cmd)
             seat = Seat.objects.get(pk=seat_id)
             seat.vote_counted = True
             seat.save()
