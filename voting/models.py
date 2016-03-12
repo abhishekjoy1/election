@@ -11,6 +11,7 @@ class StateManager(models.Manager):
 
 class State(models.Model):
     name = models.CharField(max_length=200)
+    vote_counted = models.BooleanField(default=False)
     objects = StateManager()
 
     def __str__(self):
@@ -19,6 +20,7 @@ class State(models.Model):
 class Seat(models.Model):
     name = models.CharField(max_length=200)
     state = models.ForeignKey(State)
+    vote_counted = models.BooleanField(default=False)
 
     def __str__(self):
         return "%s" % (self.name)
