@@ -70,7 +70,7 @@ def vote(request):
         booth = user.booth
         seat_name = booth.seat.name
 
-        dir = seat_name
+        dir = 'voting_data/'+seat_name
         if not os.path.exists(dir):
             os.mkdir(dir)
 
