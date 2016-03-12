@@ -3,6 +3,7 @@ import os, pdb
 from .models import *
 @task()
 def seat_count(seat_id):
+    # r = redis.StrictRedis(host='localhost', port=6379)
     hadoop_input_dir = 'voting_data/Seat'+seat_id+'/'
     if not os.path.exists(hadoop_input_dir):
         return False
@@ -20,5 +21,6 @@ def seat_count(seat_id):
             seat = Seat.objects.get(pk=seat_id)
             seat.vote_counted = True
             seat.save()
+            # r.put("COUNTING_DONE_SEAT_"+seat_id, "True")
             return True
     return False

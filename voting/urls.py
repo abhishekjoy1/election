@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^vote/$', vote),
     url(r'^update_election_status/$', update_election_status),
     url(r'^count_vote/$', count_vote),
+    url(r'^result_count/$', result_count),
 ]

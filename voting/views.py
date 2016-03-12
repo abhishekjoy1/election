@@ -121,12 +121,11 @@ def update_election_status(request):
 
 @login_required
 def count_vote(request):
-    pdb.set_trace()
     if request.method == 'POST':
         seat_id = request.POST['seat_id']
         from voting.tasks import seat_count
         seat_count.delay(seat_id)
-        return HttpResponse("Job put in asynchronous queue")
+        return HttpResponseRedirect('/voting/result_count/')
     seats = Seat.objects.filter(vote_counted=False)
     if len(seats) > 0:
         return render_to_response(
@@ -136,7 +135,17 @@ def count_vote(request):
             },
             context_instance=RequestContext(request)
         )
-    return HttpResponse("vote counting for all seats are over")
+    return HttpResponse('/voting/result_count/')
+
+@login_required
+def result_count(request):
+    # r = redis.StrictRedis(host='localhost', port=6379)
+    seats = Seat.objects.filter(vote_counted=True)
+    if len(seats) > 0:
+        seat_names = seats.values("name")
+        return HttpResponse("Counting is over for "+str(seat_names))
+    return HttpResponseRedirect('/voting/result_count/')
+
 
 from rest_framework import viewsets
 from voting.serializers import CustomUserSerializer, StateSerializer, SeatSerializer, BoothSerializer
