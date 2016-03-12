@@ -126,5 +126,3 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'voting.CustomUser'
-
-IS_ELECTION_DONE = False

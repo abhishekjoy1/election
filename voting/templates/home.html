@@ -8,7 +8,7 @@
         <p><a href="/voting/vote/">Cast your vote</a></p>
     {% endif %}
     {% if user.is_election_staff %}
-        <p><input type="checkbox" name="is_election_done" id="election_done">Is election done?<br></p>
+        <p><input type="checkbox" name="is_election_done" id="election_done" {% if is_election_done %} checked="checked" readonly="readonly" disabled="disabled"{% endif %}>Is election done?<br></p>
         <div id="count_vote"></div>
     {% endif %}
     <a href="/voting/logout/">Logout</a>

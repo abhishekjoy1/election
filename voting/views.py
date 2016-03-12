@@ -10,6 +10,7 @@ from rest_framework import generics
 from django.conf import settings
 from .models import *
 import os, pdb
+import redis
 
 @csrf_protect
 def register(request):
@@ -41,16 +42,20 @@ def logout_page(request):
 
 @login_required
 def home(request):
+    r = redis.StrictRedis(host='localhost', port=6379)
+    IS_ELECTION_DONE = r.get("IS_ELECTION_DONE")
     return render_to_response(
     'home.html',
     { 'user': request.user,
-      'is_election_done' : settings.IS_ELECTION_DONE
+      'is_election_done' : IS_ELECTION_DONE=="true"
     },
     context_instance=RequestContext(request)
     )
 
 @login_required
 def vote(request):
+    r = redis.StrictRedis(host='localhost', port=6379)
+    IS_ELECTION_DONE = r.get("IS_ELECTION_DONE")
     if request.method == 'POST':
         user = CustomUser.objects.get(voter_id=request.POST['user'])
         user.casted_vote = True
@@ -74,11 +79,10 @@ def vote(request):
         f.write(party_name+"\n")
         f.close()
 
-
         return render_to_response(
         'home.html',
         { 'user': request.user,
-          'is_election_done' : settings.IS_ELECTION_DONE
+          'is_election_done' : IS_ELECTION_DONE=="true"
         },
         context_instance=RequestContext(request)
         )
@@ -87,7 +91,7 @@ def vote(request):
         return render_to_response(
             'home.html',
             { 'user': request.user,
-              'is_election_done' : settings.IS_ELECTION_DONE
+              'is_election_done' : IS_ELECTION_DONE=="true"
             },
             context_instance=RequestContext(request)
         )
@@ -102,7 +106,16 @@ def vote(request):
 @login_required
 def update_election_status(request):
     if request.method == 'POST':
-        settings.IS_ELECTION_DONE = not settings.IS_ELECTION_DONE
+        r = redis.StrictRedis(host='localhost', port=6379)
+        IS_ELECTION_DONE = r.get("IS_ELECTION_DONE")
+        if not IS_ELECTION_DONE:
+            r.set("IS_ELECTION_DONE", "true")
+        else:
+            if IS_ELECTION_DONE == "true":
+                IS_ELECTION_DONE = "false"
+            else:
+                IS_ELECTION_DONE = "true"
+            r.set("IS_ELECTION_DONE", IS_ELECTION_DONE)
         return HttpResponse("<a href='/voting/count_vote/'>Count Votes</a>")
 
 
