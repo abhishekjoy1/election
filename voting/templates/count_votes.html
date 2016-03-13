@@ -4,15 +4,35 @@
 {% block content %}
     <form method="post" action="/voting/count_vote/">{% csrf_token %}
         <table border="0">
-            <tr><th><label for="id_seat">Seat Name:</label></th>
+            <tr>
+                <th><label for="id_level">Level:</label></th>
                 <td>
-                 <select name="seat_id">
-                    {% for seat in seats %}
-                        <option value="{{ seat.id }}">{{ seat.name }}</option>
+                 <select name="level" id="level_id">
+                     <option value="">Select Level</option>
+                     <option value="state">state</option>
+                     <option value="seat">seat</option>
+                 </select>
+                </td>
+            </tr>
+            <tr>
+                <th><label for="id_state" id="state">State Name:</label></th>
+                <td>
+                 <select name="state_id" id="state_id">
+                     {% for state in states %}
+                        <option value="{{ state.id }}">{{ state.name }}</option>
                     {% endfor %}
                  </select>
                 </td>
-                <td><input type="hidden" name="user" value="{{ user }}"></td>
+            </tr>
+            <tr><th><label for="id_seat" id="seat">Seat Name:</label></th>
+                <td>
+                 <select name="seat_id" id="seat_id">
+                    <option></option>
+                 </select>
+                </td>
+                <td><input type="hidden" name="user" value="{{ user }}"></td
+            </tr>
+            <tr>
                 <td>
                    <input type="submit" value="Submit">
                 </td>

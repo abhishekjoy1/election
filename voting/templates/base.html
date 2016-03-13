@@ -76,6 +76,44 @@
                         $('#count_vote').empty();
                     }
                });
+
+                $('#state').hide();
+                $('#seat').hide();
+                $('#state_id').hide();
+                $('#seat_id').hide();
+                $('#level_id').on('change', function() {
+                    level= $(this).val();
+                    if(level=="state"){
+                        $('#state').show();
+                        $('#state_id').show();
+                    }else if(level=="seat"){
+                        $('#state').show();
+                        $('#state_id').show();
+                        $('#state_id').trigger('change');
+                        $('#seat').show();
+                        $('#seat_id').show();
+                    }else{
+                        $('#state').hide();
+                        $('#seat').hide();
+                        $('#state_id').hide();
+                        $('#seat_id').hide();
+                    }
+                });
+                $('#state_id').on('change', function() {
+                    $.ajax({
+                        url: '/voting/api/seats/',
+                        dataType: 'json',
+                        type: 'GET',
+                        data: {state_id : $('#state_id').val()},
+                        success: function(data) {
+                            $('#seat_id').empty();
+                            for (row in data) {
+                                $('#seat_id').append($('<option></option>').attr('value', data[row].id).text(data[row].name));
+                            }
+
+                        }
+                    });
+                });
             });
 
         </script>

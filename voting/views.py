@@ -126,12 +126,12 @@ def count_vote(request):
         from voting.tasks import seat_count
         seat_count.delay(seat_id)
         return HttpResponseRedirect('/voting/result_count/')
-    seats = Seat.objects.filter(vote_counted=False)
-    if len(seats) > 0:
+    states = State.objects.filter(vote_counted=False)
+    if len(states) > 0:
         return render_to_response(
             "count_votes.html",
             { 'user': request.user,
-              'seats': seats
+              'states': states
             },
             context_instance=RequestContext(request)
         )

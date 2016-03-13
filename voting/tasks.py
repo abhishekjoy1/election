@@ -20,7 +20,7 @@ def seat_count(seat_id):
                 flag = os.system(cmd)
             cmd = "bin/hadoop fs -get /user/joy/"+hadoop_output_dir
             os.system(cmd)
-            
+
             seat = Seat.objects.get(pk=seat_id)
             seat.vote_counted = True
             seat.save()
