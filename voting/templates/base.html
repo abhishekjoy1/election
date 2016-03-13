@@ -84,6 +84,8 @@
                 $('#level_id').on('change', function() {
                     level= $(this).val();
                     if(level=="state"){
+                        $('#seat').hide();
+                        $('#seat_id').hide();
                         $('#state').show();
                         $('#state_id').show();
                     }else if(level=="seat"){
