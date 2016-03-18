@@ -121,10 +121,21 @@ def update_election_status(request):
 
 @login_required
 def count_vote(request):
+    pdb.set_trace()
     if request.method == 'POST':
-        seat_id = request.POST['seat_id']
-        from voting.tasks import seat_count
-        seat_count.delay(seat_id)
+        if 'seat_id' in request.POST:
+            seat_id = request.POST['seat_id']
+            state_id = request.POST['state_id']
+            seat = Seat.objects.get(pk=seat_id)
+            seat.vote_counted = True
+            seat.save()
+            from voting.tasks import seat_count
+            seat_count.delay(seat_id, state_id)
+        elif 'state_id' in request.POST:
+            state_id = request.POST['state_id']
+            state = State.objects.get(pk=seat_id)
+            state.vote_counted = True
+            state.save()
         return HttpResponseRedirect('/voting/result_count/')
     states = State.objects.filter(vote_counted=False)
     if len(states) > 0:
