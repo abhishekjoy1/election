@@ -39,7 +39,6 @@ def seat_count(seat_id, state_id):
     return False
 
 def state_count(state_id):
-    pdb.set_trace()
     seat_ids = State.objects.get(pk=state_id).seat_set.all().values('id')
     for seat_id in seat_ids:
         seat_count(seat_id['id'], state_id)
@@ -66,7 +65,7 @@ def state_count(state_id):
             winner = max(parties_with_votes, key=operator.itemgetter(1))[0]
 
 
-            file_name = 'voting_data/state'+state_id+".txt"
+            file_name = 'voting_data/state'+str(state_id)+".txt"
             f = open(file_name, 'a+' )
             f.write(winner+" 1\n")
             f.close()
