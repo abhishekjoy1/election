@@ -196,9 +196,11 @@ def count_vote(request):
             seat_count.delay(seat_id, state_id)
         elif 'state_id' in request.POST:
             state_id = request.POST['state_id']
-            state = State.objects.get(pk=seat_id)
+            state = State.objects.get(pk=state_id)
             state.vote_counted = True
             state.save()
+            from voting.tasks import state_count
+            state_count.delay(state_id)
         return HttpResponseRedirect('/voting/result_count/')
     states = State.objects.filter(vote_counted=False)
     if len(states) > 0:
@@ -213,13 +215,31 @@ def count_vote(request):
 
 @login_required
 def result_count(request):
-    # r = redis.StrictRedis(host='localhost', port=6379)
-    seats = Seat.objects.filter(vote_counted=True)
-    if len(seats) > 0:
-        seat_names = seats.values("name")
-        return HttpResponse("Counting is over for "+str(seat_names))
+    flag = False
+    states = State.objects.all()
+    line = "STATE LEVEL RESULT<br><br>"
+    for state in states:
+        id = state.id
+        if os.path.exists('voting_data/State'+str(id)+'/count'):
+            _line = [l.rstrip('\n') for l in open('voting_data/State'+str(id)+'/count')][0]
+            winner = _line.split("\t")[0]
+            line += "Winner for "+state.name+" is "+winner+"<br>"
+            flag = True
+
+    seats = Seat.objects.all()
+    line  += "SEAT LEVEL RESULT<br><br>"
+    for seat in seats:
+        id = seat.id
+        if os.path.exists('voting_data/Seat'+str(id)+'/count'):
+            _line = [l.rstrip('\n') for l in open('voting_data/Seat'+str(id)+'/count')][0]
+            winner = _line.split("\t")[0]
+            line += "Winner for "+seat.name+" under "+seat.state.name+" is "+winner+"<br>"
+            flag = True
+
+    if flag:
+        return HttpResponse(line)
     return render_to_response(
-        "result_seat.html",
+        "result.html",
         context_instance=RequestContext(request)
     )
 
