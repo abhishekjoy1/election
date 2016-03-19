@@ -2,6 +2,7 @@
 {% block title %}Voting Page{% endblock %}
 {% block head %}Cast Your Vote Here{% endblock %}
 {% block content %}
+    <p><a href="/voting/home/">Home</a></p>
     <form method="post" action="/voting/vote/">{% csrf_token %}
         <table border="0">
             <tr><th><label for="id_party">Party Name:</label></th>
