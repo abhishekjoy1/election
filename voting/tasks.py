@@ -38,6 +38,7 @@ def seat_count(seat_id, state_id):
             return True
     return False
 
+@task()
 def state_count(state_id):
     seat_ids = State.objects.get(pk=state_id).seat_set.all().values('id')
     for seat_id in seat_ids:

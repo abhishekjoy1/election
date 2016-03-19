@@ -129,6 +129,7 @@ def vote(request):
         party_name = party.name
         num_seats_own = party.num_seats_won
         num_seats_own += 1
+        party.num_seats_won = num_seats_own
         party.save()
 
         booth = user.booth
@@ -185,8 +186,9 @@ def update_election_status(request):
 
 @login_required
 def count_vote(request):
+    pdb.set_trace()
     if request.method == 'POST':
-        if 'seat_id' in request.POST:
+        if 'seat_id' in request.POST and request.POST['seat_id']:
             seat_id = request.POST['seat_id']
             state_id = request.POST['state_id']
             seat = Seat.objects.get(pk=seat_id)
