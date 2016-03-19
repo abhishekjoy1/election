@@ -185,7 +185,6 @@ def update_election_status(request):
 
 @login_required
 def count_vote(request):
-    pdb.set_trace()
     if request.method == 'POST':
         if 'seat_id' in request.POST:
             seat_id = request.POST['seat_id']
