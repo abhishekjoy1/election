@@ -10,7 +10,7 @@ class StateManager(models.Manager):
         return self.get(pk=id)
 
 class State(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
     vote_counted = models.BooleanField(default=False)
     objects = StateManager()
 
@@ -22,6 +22,9 @@ class Seat(models.Model):
     state = models.ForeignKey(State)
     vote_counted = models.BooleanField(default=False)
 
+    class Meta:
+        unique_together = ('state', 'name',)
+
     def __str__(self):
         return "%s" % (self.name)
 
@@ -29,11 +32,14 @@ class Booth(models.Model):
     name = models.CharField(max_length=200)
     seat = models.ForeignKey(Seat)
 
+    class Meta:
+        unique_together = ('seat', 'name',)
+
     def __str__(self):
         return "%s" % (self.name)
 
 class Party(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
     num_seats_won = models.IntegerField(default=0)
 
     def __str__(self):

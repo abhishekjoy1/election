@@ -24,6 +24,10 @@
                     return cookieValue;
                 }
                 $('.datepicker').datepicker();
+                if(!$('.state_id').is('#id_state')){
+                    $('.state_id').attr('id', 'id_state');
+                }
+                $('#id_state').trigger('change');
                 $('#id_state').on('change', function() {
                     $.ajax({
                         url: '/voting/api/seats/',

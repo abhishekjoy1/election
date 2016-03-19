@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Add New Booth{% endblock %}
+{% block head %}Add a new booth{% endblock %}
+{% block content %}
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+     <form method="post" action="/voting/add_booth/">{% csrf_token %}
+         <table border="0">
+            <tr><th><label for="id_state">State Name:</label></th>
+                <td>
+                 <select name="state_id" class="state_id">
+                     <option>Select state</option>
+                    {% for state in states %}
+                        <option value="{{ state.id }}">{{ state.name }}</option>
+                    {% endfor %}
+                 </select>
+                </td>
+            </tr>
+             <tr><th><label for="id_seat">Seat Name:</label></th>
+                <td>
+                 <select name="seat_id" class="seat_id" id="id_seat">
+                     <option>Select seat</option>
+                 </select>
+                </td>
+            </tr>
+            <tr><th><label for="id_seat">Booth Name:</label></th>
+                <td><input type="text" name="booth_name"></td>
+            </tr>
+             <tr><td><input type="submit" value="Submit"></td></tr>
+         </table>
+     </form>
+{% endblock %}
