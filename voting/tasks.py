@@ -53,7 +53,7 @@ def state_count(state_id):
         cmd = "hadoop jar VoteCount.jar "+ "/user/joy/State"+str(state_id) + " " + "/user/joy/"+hadoop_output_dir
         flag = os.system(cmd)
         if not flag:
-            cmd = "hadoop fs -ls /user/joy/"+hadoop_output_dir
+            cmd = "hadoop fs -ls /user/joy/"+hadoop_output_dir+'/part-r-00000'
             flag = os.system(cmd)
             while(flag):
                 flag = os.system(cmd)

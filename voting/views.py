@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from rest_framework import generics
 from django.conf import settings
+import operator
 from .models import *
 import os, pdb
 import redis
@@ -186,7 +187,6 @@ def update_election_status(request):
 
 @login_required
 def count_vote(request):
-    pdb.set_trace()
     if request.method == 'POST':
         if 'seat_id' in request.POST and request.POST['seat_id']:
             seat_id = request.POST['seat_id']
@@ -222,9 +222,12 @@ def result_count(request):
     line = "STATE LEVEL RESULT<br><br>"
     for state in states:
         id = state.id
+
         if os.path.exists('voting_data/State'+str(id)+'/count'):
-            _line = [l.rstrip('\n') for l in open('voting_data/State'+str(id)+'/count')][0]
-            winner = _line.split("\t")[0]
+            lines = [l.rstrip('\n') for l in open('voting_data/State'+str(id)+'/count')]
+            parties_with_votes = [l.split("\t") for l in lines]
+            winner = max(parties_with_votes, key=operator.itemgetter(1))[0]
+
             line += "Winner for "+state.name+" is "+winner+"<br>"
             flag = True
 
@@ -233,8 +236,10 @@ def result_count(request):
     for seat in seats:
         id = seat.id
         if os.path.exists('voting_data/Seat'+str(id)+'/count'):
-            _line = [l.rstrip('\n') for l in open('voting_data/Seat'+str(id)+'/count')][0]
-            winner = _line.split("\t")[0]
+            lines = [l.rstrip('\n') for l in open('voting_data/Seat'+str(id)+'/count')]
+            parties_with_votes = [l.split("\t") for l in lines]
+            winner = max(parties_with_votes, key=operator.itemgetter(1))[0]
+
             line += "Winner for "+seat.name+" under "+seat.state.name+" is "+winner+"<br>"
             flag = True
 
