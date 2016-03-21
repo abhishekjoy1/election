@@ -56,19 +56,11 @@ def home(request):
 @login_required
 def add_state(request):
     error_message=""
-    r = redis.StrictRedis(host='localhost', port=6379)
-    IS_ELECTION_DONE = r.get("IS_ELECTION_DONE")
     if request.method == 'POST':
         name = request.POST['state_name']
         try:
             State.objects.create(name=name)
-            return render_to_response(
-            'home.html',
-            { 'user': request.user,
-              'is_election_done' : IS_ELECTION_DONE=="true"
-            },
-            context_instance=RequestContext(request)
-        )
+            return HttpResponseRedirect('/voting/home')
         except:
             error_message="A state with same name already exists!"
     return render_to_response('add_state.html', {'error_message' : error_message}, context_instance=RequestContext(request))
@@ -76,20 +68,12 @@ def add_state(request):
 @login_required
 def add_seat(request):
     error_message=""
-    r = redis.StrictRedis(host='localhost', port=6379)
-    IS_ELECTION_DONE = r.get("IS_ELECTION_DONE")
     if request.method == 'POST':
         name = request.POST['seat_name']
         state_id = request.POST['state_id']
         try:
             Seat.objects.create(name=name, state_id=state_id)
-            return render_to_response(
-            'home.html',
-            { 'user': request.user,
-              'is_election_done' : IS_ELECTION_DONE=="true"
-            },
-            context_instance=RequestContext(request)
-        )
+            return HttpResponseRedirect('/voting/home')
         except:
             error_message="A seat with same name already exists!"
     return render_to_response('add_seat.html', {'states' : State.objects.all(), 'error_message' : error_message},
@@ -98,20 +82,12 @@ def add_seat(request):
 @login_required
 def add_booth(request):
     error_message=""
-    r = redis.StrictRedis(host='localhost', port=6379)
-    IS_ELECTION_DONE = r.get("IS_ELECTION_DONE")
     if request.method == 'POST':
         name = request.POST['booth_name']
         seat_id = request.POST['seat_id']
         try:
             Booth.objects.create(name=name, seat_id=seat_id)
-            return render_to_response(
-            'home.html',
-            { 'user': request.user,
-              'is_election_done' : IS_ELECTION_DONE=="true"
-            },
-            context_instance=RequestContext(request)
-        )
+            return HttpResponseRedirect('/voting/home')
         except:
             error_message="A booth with same name already exists!"
     return render_to_response('add_booth.html', {'states': State.objects.all(), 'error_message' : error_message},
@@ -119,8 +95,6 @@ def add_booth(request):
 
 @login_required
 def vote(request):
-    r = redis.StrictRedis(host='localhost', port=6379)
-    IS_ELECTION_DONE = r.get("IS_ELECTION_DONE")
     if request.method == 'POST':
         user = CustomUser.objects.get(voter_id=request.POST['user'])
         user.casted_vote = True
@@ -145,22 +119,10 @@ def vote(request):
         f.write(party_name+"\n")
         f.close()
 
-        return render_to_response(
-        'home.html',
-        { 'user': request.user,
-          'is_election_done' : IS_ELECTION_DONE=="true"
-        },
-        context_instance=RequestContext(request)
-        )
+        return HttpResponseRedirect('/voting/home')
     user = request.user
     if user.casted_vote:
-        return render_to_response(
-            'home.html',
-            { 'user': request.user,
-              'is_election_done' : IS_ELECTION_DONE=="true"
-            },
-            context_instance=RequestContext(request)
-        )
+        return HttpResponseRedirect('/voting/home')
     return render_to_response(
         'cast_vote.html',
         { 'user': request.user,
@@ -206,13 +168,7 @@ def count_vote(request):
         return HttpResponseRedirect('/voting/result_count/')
     states = State.objects.filter(vote_counted=False)
     if len(states) > 0:
-        return render_to_response(
-            "count_votes.html",
-            { 'user': request.user,
-              'states': states
-            },
-            context_instance=RequestContext(request)
-        )
+        return HttpResponseRedirect('/voting/home')
     return HttpResponse('/voting/result_count/')
 
 @login_required

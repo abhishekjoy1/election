@@ -12,7 +12,11 @@
         <p><a href="/voting/add_state/">Add State</a></p>
         <p><a href="/voting/add_seat/">Add Seat</a></p>
         <p><a href="/voting/add_booth/">Add Booth</a></p>
-        <div id="count_vote"></div>
+        {% if is_election_done %}
+            <div id="count_vote"><a href='/voting/count_vote/'>Count Votes</a></div>
+        {% else %}
+            <div id="count_vote"></div>
+        {% endif %}
     {% endif %}
     <a href="/voting/logout/">Logout</a>
 {% endblock %}

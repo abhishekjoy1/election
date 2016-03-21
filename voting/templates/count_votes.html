@@ -2,6 +2,7 @@
 {% block title %}Vote Counting Page{% endblock %}
 {% block head %}Count Votes Here{% endblock %}
 {% block content %}
+    <p><a href="/voting/home/">Home</a></p>
     <form method="post" action="/voting/count_vote/">{% csrf_token %}
         <table border="0">
             <tr>
