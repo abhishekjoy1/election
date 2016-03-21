@@ -150,9 +150,13 @@ def update_election_status(request):
 @login_required
 def count_vote(request):
     if request.method == 'POST':
+        level=None
+        id=None
         if 'seat_id' in request.POST and request.POST['seat_id']:
             seat_id = request.POST['seat_id']
             state_id = request.POST['state_id']
+            level='seat'
+            id=seat_id
             seat = Seat.objects.get(pk=seat_id)
             seat.vote_counted = True
             seat.save()
@@ -161,23 +165,21 @@ def count_vote(request):
         elif 'state_id' in request.POST:
             state_id = request.POST['state_id']
             state = State.objects.get(pk=state_id)
+            level='state'
+            id=state_id
             state.vote_counted = True
             state.save()
             from voting.tasks import state_count
             state_count.delay(state_id)
-        return HttpResponseRedirect('/voting/result_count/')
-    states = State.objects.filter(vote_counted=False)
-    if len(states) > 0:
-        return HttpResponseRedirect('/voting/home')
-    return HttpResponse('/voting/result_count/')
+        return HttpResponseRedirect('/voting/result_count/'+level+'/'+str(id))
+    states = State.objects.all()
+    return render_to_response('count_votes.html', {'user': request.user, 'states':states},  context_instance=RequestContext(request))
 
 @login_required
-def result_count(request):
+def result_count(request, level, id):
     flag = False
-    states = State.objects.all()
-    line = "STATE LEVEL RESULT<br><br>"
-    for state in states:
-        id = state.id
+    if level=="state":
+        line = "STATE LEVEL RESULT<br><br>"
 
         if os.path.exists('voting_data/State'+str(id)+'/count'):
             lines = [l.rstrip('\n') for l in open('voting_data/State'+str(id)+'/count')]
@@ -186,11 +188,9 @@ def result_count(request):
 
             line += "Winner for "+state.name+" is "+winner+"<br>"
             flag = True
+    else:
+        line  = "SEAT LEVEL RESULT<br><br>"
 
-    seats = Seat.objects.all()
-    line  += "SEAT LEVEL RESULT<br><br>"
-    for seat in seats:
-        id = seat.id
         if os.path.exists('voting_data/Seat'+str(id)+'/count'):
             lines = [l.rstrip('\n') for l in open('voting_data/Seat'+str(id)+'/count')]
             parties_with_votes = [l.split("\t") for l in lines]
@@ -198,11 +198,11 @@ def result_count(request):
 
             line += "Winner for "+seat.name+" under "+seat.state.name+" is "+winner+"<br>"
             flag = True
-
     if flag:
         return HttpResponse(line)
     return render_to_response(
         "result.html",
+        {'level':level, 'id':id},
         context_instance=RequestContext(request)
     )
 
