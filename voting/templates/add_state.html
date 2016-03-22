@@ -13,7 +13,7 @@
              <option value="modify">Modify</option>
          </select><br><br>
          <select name="state_id" id="add_state_id" style="visibility:hidden">
-             <option>Select a state</option>
+             <option value="">Select a state</option>
              {% for state in states %}
                 <option value="{{ state.id }}">{{ state.name }}</option>
              {% endfor %}

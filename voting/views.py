@@ -59,7 +59,12 @@ def add_state(request):
     if request.method == 'POST':
         name = request.POST['state_name']
         try:
-            State.objects.create(name=name)
+            if 'state_id' in request.POST and request.POST['state_id']:
+                state = State.objects.get(pk=request.POST['state_id'])
+                state.name = name
+                state.save()
+            else:
+                State.objects.create(name=name)
             return HttpResponseRedirect('/voting/home')
         except:
             error_message="A state with same name already exists!"
