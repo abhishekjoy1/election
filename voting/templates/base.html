@@ -27,6 +27,18 @@
                 if(!$('.state_id').is('#id_state')){
                     $('.state_id').attr('id', 'id_state');
                 }
+
+                $('#option_id').on('change', function() {
+                    if($('#option_id').val() == "add"){
+                      $("#add_state_id").css("visibility", "hidden");
+                      $('#state_name').val("");
+                    }else if($('#option_id').val() == "modify"){
+                       $('#add_state_id').removeAttr("style");
+                    }
+                });
+                $('#add_state_id').on('change', function(){
+                   $('#state_name').val($('#add_state_id option:selected').text());
+                });
                 $('#id_state').trigger('change');
                 $('#id_state').on('change', function() {
                     $.ajax({

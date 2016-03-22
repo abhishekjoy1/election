@@ -63,7 +63,7 @@ def add_state(request):
             return HttpResponseRedirect('/voting/home')
         except:
             error_message="A state with same name already exists!"
-    return render_to_response('add_state.html', {'error_message' : error_message}, context_instance=RequestContext(request))
+    return render_to_response('add_state.html', {'states' : State.objects.all(), 'error_message' : error_message}, context_instance=RequestContext(request))
 
 @login_required
 def add_seat(request):
@@ -173,7 +173,7 @@ def count_vote(request):
             state_count.delay(state_id)
         return HttpResponseRedirect('/voting/result_count/'+level+'/'+str(id))
     states = State.objects.all()
-    return render_to_response('count_votes.html', {'user': request.user, 'states':states},  context_instance=RequestContext(request))
+    return render_to_response('count_votes.html', {'user': request.user,    'states':states},  context_instance=RequestContext(request))
 
 @login_required
 def result_count(request, level, id):

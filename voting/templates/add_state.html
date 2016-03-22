@@ -7,8 +7,19 @@
         <p>{{ error_message }}</p>
     {% endif %}
      <form method="post" action="/voting/add_state/">{% csrf_token %}
-         State name:<br>
-         <input type="text" name="state_name"><br>
+         <select name="option" id="option_id">
+             <option value="">Select Option</option>
+             <option value="add">Add</option>
+             <option value="modify">Modify</option>
+         </select><br><br>
+         <select name="state_id" id="add_state_id" style="visibility:hidden">
+             <option>Select a state</option>
+             {% for state in states %}
+                <option value="{{ state.id }}">{{ state.name }}</option>
+             {% endfor %}
+         </select><br>
+         <label for="state" id="state_label">State name:<br>
+         <input type="text" name="state_name" id="state_name"><br>
          <input type="submit" value="Submit">
      </form>
 {% endblock %}
