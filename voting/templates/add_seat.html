@@ -8,17 +8,33 @@
     {% endif %}
      <form method="post" action="/voting/add_seat/">{% csrf_token %}
          <table border="0">
+             <tr><th><label for="id_option">Option:</label></th>
+                 <td>
+                <select name="option" id="option_id">
+                <option value="">Select Option</option>
+                <option value="add">Add</option>
+                <option value="modify">Modify</option>
+                </select>
+             </td></tr>
             <tr><th><label for="id_state">State Name:</label></th>
                 <td>
-                 <select name="state_id" class="state_id">
+                 <select name="state_id" id="id_state">
+                     <option value="">Select a state</option>
                     {% for state in states %}
                         <option value="{{ state.id }}">{{ state.name }}</option>
                     {% endfor %}
                  </select>
                 </td>
             </tr>
+             <tr><th><label for="id_state" id="seat_label_id">Existing seat:</label></th>
+                <td>
+                 <select name="seat_id" id="id_seat">
+                     <option value="">Select a seat</option>
+                 </select>
+                </td>
+            </tr>
             <tr><th><label for="id_seat">Seat Name:</label></th>
-                <td><input type="text" name="seat_name"></td>
+                <td><input type="text" name="seat_name" id="seat_name"></td>
             </tr>
              <tr><td><input type="submit" value="Submit"></td></tr>
          </table>
