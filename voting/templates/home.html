@@ -9,8 +9,8 @@
     {% endif %}
     {% if user.is_election_staff %}
         <p><input type="checkbox" name="is_election_done" id="election_done" {% if is_election_done %} checked="checked" readonly="readonly" disabled="disabled"{% endif %}>Is election done?<br></p>
-        <p><a href="/voting/add_state/">Add/Modify State</a></p>
-        <p><a href="/voting/add_seat/">Add Seat</a></p>
+        <p><a href="/voting/add_state/">Add/Modify/Delete State</a></p>
+        <p><a href="/voting/add_seat/">Add/Modify/Delete Seat</a></p>
         <p><a href="/voting/add_booth/">Add Booth</a></p>
         {% if is_election_done %}
             <div id="count_vote"><a href='/voting/count_vote/'>Count Votes</a></div>

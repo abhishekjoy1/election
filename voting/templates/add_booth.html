@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-{% block title %}Add New Booth{% endblock %}
-{% block head %}Add a new booth{% endblock %}
+{% block title %}Add/Modify/Delete booth{% endblock %}
+{% block head %}Add/Modify/Delete booth{% endblock %}
 {% block content %}
 <p><a href="/voting/home/">Home</a></p>
     {% if error_message %}
@@ -8,9 +8,18 @@
     {% endif %}
      <form method="post" action="/voting/add_booth/">{% csrf_token %}
          <table border="0">
-            <tr><th><label for="id_state">State Name:</label></th>
+             <tr><th><label for="id_option">Option:</label></th>
+                 <td>
+                <select name="option" id="option_id_booth">
+                    <option value="">Select Option</option>
+                    <option value="add">Add</option>
+                    <option value="modify">Modify</option>
+                    <option value="delete">Delete</option>
+                </select>
+             </td></tr>
+            <tr><th><label for="id_state" id="label_state">State Name:</label></th>
                 <td>
-                 <select name="state_id" class="state_id">
+                 <select name="state_id" class="state_id" id="id_state">
                      <option>Select state</option>
                     {% for state in states %}
                         <option value="{{ state.id }}">{{ state.name }}</option>
@@ -18,15 +27,22 @@
                  </select>
                 </td>
             </tr>
-             <tr><th><label for="id_seat">Seat Name:</label></th>
+             <tr><th><label for="seat_name" id="seat_name">Seat Name:</label></th>
                 <td>
                  <select name="seat_id" class="seat_id" id="id_seat">
                      <option>Select seat</option>
                  </select>
                 </td>
             </tr>
-            <tr><th><label for="id_seat">Booth Name:</label></th>
-                <td><input type="text" name="booth_name"></td>
+             <tr><th><label for="booth_label" id="booth_label_id">Existing booth:</label></th>
+                <td>
+                 <select name="booth_id" id="id_booth">
+                     <option value="">Select booth</option>
+                 </select>
+                </td>
+            </tr>
+            <tr><th><label for="booth_name" id="label_booth_name">Booth Name:</label></th>
+                <td><input type="text" name="booth_name" id="booth_name"></td>
             </tr>
              <tr><td><input type="submit" value="Submit"></td></tr>
          </table>

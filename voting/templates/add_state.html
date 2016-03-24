@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-{% block title %}Add New State{% endblock %}
-{% block head %}Add a new state{% endblock %}
+{% block title %}Add/Modify/Delete State{% endblock %}
+{% block head %}Add/Modify/Delete state{% endblock %}
 {% block content %}
 <p><a href="/voting/home/">Home</a></p>
     {% if error_message %}
@@ -11,6 +11,7 @@
              <option value="">Select Option</option>
              <option value="add">Add</option>
              <option value="modify">Modify</option>
+             <option value="delete">Delete</option>
          </select><br><br>
          <select name="state_id" id="add_state_id" style="visibility:hidden">
              <option value="">Select a state</option>
@@ -18,7 +19,7 @@
                 <option value="{{ state.id }}">{{ state.name }}</option>
              {% endfor %}
          </select><br>
-         <label for="state" id="state_label">State name:<br>
+         <label for="state" id="state_label">State name:</label><br>
          <input type="text" name="state_name" id="state_name"><br>
          <input type="submit" value="Submit">
      </form>

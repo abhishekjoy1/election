@@ -32,10 +32,39 @@
                     if($('#option_id').val() == "add"){
                       $("#add_state_id").css("visibility", "hidden");
                       $('#state_name').val("");
+                      $('#state_name').removeAttr("style");
+                      $('#state_label').removeAttr("style");
                     }else if($('#option_id').val() == "modify"){
                        $('#add_state_id').removeAttr("style");
+                       $('#state_name').removeAttr("style");
+                       $('#state_label').removeAttr("style");
+                    }else if($('#option_id').val() == "delete"){
+                       $('#add_state_id').removeAttr("style");
+                       $('#state_name').css("visibility", "hidden");
+                       $('#state_label').css("visibility", "hidden");
                     }
                 });
+
+                $('#option_id_seat').on('change', function() {
+                    if($('#option_id_seat').val() == "add"){
+                      $("#id_seat").css("visibility", "hidden");
+                      $('#seat_label_id').css("visibility", "hidden");
+                      $('#seat_name').val("");
+                      $('#label_seat_name').removeAttr("style");
+                    }else if($('#option_id_seat').val() == "delete"){
+                       $('#id_seat').removeAttr("style");
+                       $('#seat_label_id').removeAttr("style");
+                       $('#seat_name').css("visibility", "hidden");
+                       $('#label_seat_name').css("visibility", "hidden");
+                    }else if($('#option_id_seat').val() == "modify"){
+                       $('#id_seat').removeAttr("style");
+                       $('#seat_label_id').removeAttr("style");
+                       $('#seat_name').removeAttr("style");
+                       $('#seat_name').val("");
+                       $('#label_seat_name').removeAttr("style");
+                    }
+                });
+
                 $('#add_state_id').on('change', function(){
                    $('#state_name').val($('#add_state_id option:selected').text());
                 });
@@ -57,6 +86,9 @@
                 });
 
                 $('#id_seat').on('change', function() {
+                    if($('#option_id_seat').val() == "modify"){
+                        $('#seat_name').val($('#id_seat option:selected').text());
+                    }
                     $.ajax({
                         url: '/voting/api/booths/',
                         dataType: 'json',
