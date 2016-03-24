@@ -40,6 +40,7 @@
                        $('#state_label').removeAttr("style");
                     }else if($('#option_id').val() == "delete"){
                        $('#add_state_id').removeAttr("style");
+                       $('#state_name').val("");
                        $('#state_name').css("visibility", "hidden");
                        $('#state_label').css("visibility", "hidden");
                     }
@@ -87,7 +88,11 @@
                 });
 
                 $('#add_state_id').on('change', function(){
-                   $('#state_name').val($('#add_state_id option:selected').text());
+                    if($('#option_id_seat').val() == "modify"){
+                        $('#state_name').val($('#add_state_id option:selected').text());
+                    }else{
+                       $('#state_name').val("");
+                    }
                 });
                 $('#id_state').trigger('change');
                 $('#id_state').on('change', function() {
@@ -109,6 +114,8 @@
                 $('#id_seat').on('change', function() {
                     if($('#option_id_seat').val() == "modify"){
                         $('#seat_name').val($('#id_seat option:selected').text());
+                    }else{
+                        $('#seat_name').val("");
                     }
                     $.ajax({
                         url: '/voting/api/booths/',

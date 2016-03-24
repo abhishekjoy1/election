@@ -57,14 +57,18 @@ def home(request):
 def add_state(request):
     error_message=""
     if request.method == 'POST':
-        name = request.POST['state_name']
+        if 'state_name' in request.POST:
+            name = request.POST['state_name']
         try:
-            if 'state_id' in request.POST and request.POST['state_id']:
+            if name and 'state_id' in request.POST and request.POST['state_id']:
                 state = State.objects.get(pk=request.POST['state_id'])
                 state.name = name
                 state.save()
-            else:
+            elif name:
                 State.objects.create(name=name)
+            else:
+                state = State.objects.get(pk=request.POST['state_id'])
+                state.delete()
             return HttpResponseRedirect('/voting/home')
         except:
             error_message="A state with same name already exists!"
@@ -72,6 +76,7 @@ def add_state(request):
 
 @login_required
 def add_seat(request):
+    pdb.set_trace()
     error_message=""
     if request.method == 'POST':
         name = request.POST['seat_name']
@@ -86,6 +91,7 @@ def add_seat(request):
 
 @login_required
 def add_booth(request):
+    pdb.set_trace()
     error_message=""
     if request.method == 'POST':
         name = request.POST['booth_name']
