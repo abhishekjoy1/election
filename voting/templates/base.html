@@ -65,6 +65,27 @@
                     }
                 });
 
+                $('#option_id_booth').on('change', function() {
+                    if($('#option_id_booth').val() == "add"){
+                      $("#id_booth").css("visibility", "hidden");
+                      $('#booth_label_id').css("visibility", "hidden");
+                      $('#booth_name').val("");
+                      $('#label_booth_name').removeAttr("style");
+                    }else if($('#option_id_booth').val() == "delete"){
+                       $('#id_booth').removeAttr("style");
+                       $('#booth_label_id').removeAttr("style");
+                       $('#booth_name').css("visibility", "hidden");
+                       $('#label_booth_name').css("visibility", "hidden");
+                    }else if($('#option_id_booth').val() == "modify"){
+                       $('#id_booth').removeAttr("style");
+                       $('#booth_label_id').removeAttr("style");
+                       $('#booth_name').removeAttr("style");
+                       $('#booth_name').val("");
+                       $('#label_booth_name').removeAttr("style");
+                       $('#booth_name').val($('#id_booth option:selected').text());
+                    }
+                });
+
                 $('#add_state_id').on('change', function(){
                    $('#state_name').val($('#add_state_id option:selected').text());
                 });
@@ -101,6 +122,11 @@
                             }
                         }
                     });
+                });
+                $('#id_booth').on('change', function() {
+                   if($('#option_id_booth').val() == "modify"){
+                        $('#booth_name').val($('#id_booth option:selected').text());
+                    }
                 });
                flag = false;
                $('#election_done').click(function() {
