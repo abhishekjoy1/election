@@ -71,7 +71,7 @@ def add_state(request):
                 state.delete()
             return HttpResponseRedirect('/voting/home')
         except:
-            error_message="A state with same name already exists!"
+            error_message="Either input is invalid or a state with same name already exists!"
     return render_to_response('add_state.html', {'states' : State.objects.all(), 'error_message' : error_message}, context_instance=RequestContext(request))
 
 @login_required
@@ -92,7 +92,7 @@ def add_seat(request):
                 seat.delete()
             return HttpResponseRedirect('/voting/home')
         except:
-            error_message="A seat with same name already exists!"
+            error_message="Either input is invalid or a seat with same name already exists!"
     return render_to_response('add_seat.html', {'states' : State.objects.all(), 'error_message' : error_message},
                               context_instance=RequestContext(request))
 
@@ -114,7 +114,7 @@ def add_booth(request):
                 booth.delete()
             return HttpResponseRedirect('/voting/home')
         except:
-            error_message="A booth with same name already exists!"
+            error_message="Either input is invalid or a booth with same name already exists!"
     return render_to_response('add_booth.html', {'states': State.objects.all(), 'error_message' : error_message},
                               context_instance=RequestContext(request))
 
