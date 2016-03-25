@@ -60,7 +60,7 @@ def add_state(request):
         if 'state_name' in request.POST:
             name = request.POST['state_name']
         try:
-            if name and 'state_id' in request.POST and request.POST['state_id']:
+            if name and 'state_id' in request.POST and request.POST['state_id'] and request.POST['state_id']:
                 state = State.objects.get(pk=request.POST['state_id'])
                 state.name = name
                 state.save()
@@ -76,13 +76,20 @@ def add_state(request):
 
 @login_required
 def add_seat(request):
-    pdb.set_trace()
     error_message=""
     if request.method == 'POST':
         name = request.POST['seat_name']
         state_id = request.POST['state_id']
         try:
-            Seat.objects.create(name=name, state_id=state_id)
+            if name and state_id and 'seat_id' in request.POST and request.POST['seat_id']:
+                seat = Seat.objects.get(pk=request.POST['seat_id'])
+                seat.name = name
+                seat.save()
+            elif name and state_id:
+                Seat.objects.create(name=name, state_id=state_id)
+            else:
+                seat = Seat.objects.get(pk=request.POST['seat_id'])
+                seat.delete()
             return HttpResponseRedirect('/voting/home')
         except:
             error_message="A seat with same name already exists!"
@@ -91,13 +98,20 @@ def add_seat(request):
 
 @login_required
 def add_booth(request):
-    pdb.set_trace()
     error_message=""
     if request.method == 'POST':
         name = request.POST['booth_name']
         seat_id = request.POST['seat_id']
         try:
-            Booth.objects.create(name=name, seat_id=seat_id)
+            if name and seat_id and 'booth_id' in request.POST and request.POST['booth_id']:
+                booth = Booth.objects.get(pk=request.POST['booth_id'])
+                booth.name = name
+                booth.save()
+            elif name and seat_id:
+                Booth.objects.create(name=name, seat_id=seat_id)
+            else:
+                booth = Booth.objects.get(pk=request.POST['booth_id'])
+                booth.delete()
             return HttpResponseRedirect('/voting/home')
         except:
             error_message="A booth with same name already exists!"

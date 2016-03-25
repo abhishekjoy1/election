@@ -30,6 +30,7 @@
 
                 $('#option_id').on('change', function() {
                     if($('#option_id').val() == "add"){
+                      $("#add_state_id").empty().append('<option selected="selected" value="">Select a seat</option>')
                       $("#add_state_id").css("visibility", "hidden");
                       $('#state_name').val("");
                       $('#state_name').removeAttr("style");
@@ -48,6 +49,7 @@
 
                 $('#option_id_seat').on('change', function() {
                     if($('#option_id_seat').val() == "add"){
+                      $("#id_seat").empty().append('<option selected="selected" value="">Select a seat</option>')
                       $("#id_seat").css("visibility", "hidden");
                       $('#seat_label_id').css("visibility", "hidden");
                       $('#seat_name').val("");
@@ -69,6 +71,7 @@
                 $('#option_id_booth').on('change', function() {
                     if($('#option_id_booth').val() == "add"){
                       $("#id_booth").css("visibility", "hidden");
+                      $("#id_booth").empty().append('<option selected="selected" value="">Select a booth</option>')
                       $('#booth_label_id').css("visibility", "hidden");
                       $('#booth_name').val("");
                       $('#label_booth_name').removeAttr("style");
@@ -83,7 +86,6 @@
                        $('#booth_name').removeAttr("style");
                        $('#booth_name').val("");
                        $('#label_booth_name').removeAttr("style");
-                       $('#booth_name').val($('#id_booth option:selected').text());
                     }
                 });
 
@@ -127,6 +129,7 @@
                             for (row in data) {
                                 $('#id_booth').append($('<option></option>').attr('value', data[row].id).text(data[row].name));
                             }
+                            $('#id_booth').trigger("change");
                         }
                     });
                 });
