@@ -2,7 +2,8 @@ from django.conf.urls import url, include
 from rest_framework import routers
 from . import views
 from .views import *
-
+from django.contrib import admin
+admin.autodiscover()
 router = routers.DefaultRouter()
 router.register(r'users', views.CustomUserViewSet)
 router.register(r'states', views.StateViewSet)
@@ -25,4 +26,5 @@ urlpatterns = [
     url(r'^add_state/$', add_state),
     url(r'^add_seat/$', add_seat),
     url(r'^add_booth/$', add_booth),
+    url(r'^admin/', include(admin.site.urls)),
 ]
