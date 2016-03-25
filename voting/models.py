@@ -48,13 +48,12 @@ class Party(models.Model):
 SEX = (('M', 'MALE'), ('F', 'FEMALE'))
 
 class CustomUserManager(BaseUserManager):
-    def create_user(self, first_name, voter_id, is_election_staff=False, last_name=None, sex=None, date_of_birth=None, password=None):
+    def create_user(self, first_name, voter_id, last_name=None, sex=None, date_of_birth=None, password=None):
         user = self.model(
             first_name=first_name,
             last_name=last_name,
             date_of_birth=date_of_birth,
             sex=sex,
-            is_election_staff=is_election_staff,
             voter_id=voter_id
         )
 
@@ -70,7 +69,6 @@ class CustomUserManager(BaseUserManager):
         user = self.create_user(
             first_name='admin',
             last_name='',
-            is_election_staff=True,
             password=password,
             voter_id=voter_id
         )
@@ -84,7 +82,6 @@ class CustomUser(AbstractBaseUser):
     last_name = models.CharField(max_length=30)
     date_of_birth = models.DateField(null=True)
     sex = models.CharField(choices=SEX, max_length=10, null=True)
-    is_election_staff = models.BooleanField(default=True)
     voter_id = models.CharField(max_length=40, unique=True)
     booth = models.ForeignKey(Booth, null=True)
     casted_vote = models.BooleanField(default=False)

@@ -7,7 +7,7 @@
     {% if not is_election_done and user.is_election_staff == False and user.casted_vote == False %}
         <p><a href="/voting/vote/">Cast your vote</a></p>
     {% endif %}
-    {% if user.is_election_staff %}
+    {% if user.is_staff %}
         <p><input type="checkbox" name="is_election_done" id="election_done" {% if is_election_done %} checked="checked" readonly="readonly" disabled="disabled"{% endif %}>Is election done?<br></p>
         <p><a href="/voting/add_state/">Add/Modify/Delete State</a></p>
         <p><a href="/voting/add_seat/">Add/Modify/Delete Seat</a></p>
