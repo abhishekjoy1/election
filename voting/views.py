@@ -214,14 +214,15 @@ def result_count(request, level, id):
             line += "Winner for "+state.name+" is "+winner+"<br>"
             flag = True
     else:
-        line  = "SEAT LEVEL RESULT<br><br>"
+        line  = "DISTRICT LEVEL RESULT<br><br>"
 
         if os.path.exists('voting_data/Seat'+str(id)+'/count'):
             lines = [l.rstrip('\n') for l in open('voting_data/Seat'+str(id)+'/count')]
             parties_with_votes = [l.split("\t") for l in lines]
-            winner = max(parties_with_votes, key=operator.itemgetter(1))[0]
-
-            line += "Winner for "+seat.name+" under "+seat.state.name+" is "+winner+"<br>"
+            winner_count = max(parties_with_votes, key=operator.itemgetter(1))[0]
+            winner = winner_count[0]
+            count = winner_count[1]
+            line += "Winner for "+seat.name+" under "+seat.state.name+" is "+winner+" with count = "+str(count)+"<br>"
             flag = True
     if flag:
         return HttpResponse(line)

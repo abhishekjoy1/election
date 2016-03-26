@@ -13,3 +13,4 @@ ops*/profiles/
 .idea/
 .idea/*.*
 *.pyc
+voting_data/*
