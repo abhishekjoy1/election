@@ -4,7 +4,7 @@
 {% block content %}
 {% csrf_token %}
     <p>Welcome {{ user.voter_id}} !!</p>
-    {% if not is_election_done and user.is_election_staff == False and user.casted_vote == False %}
+    {% if not is_election_done and user.casted_vote == False %}
         <p><a href="/voting/vote/">Cast your vote</a></p>
     {% endif %}
     {% if user.is_staff %}

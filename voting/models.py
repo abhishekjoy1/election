@@ -45,6 +45,9 @@ class Party(models.Model):
     def __str__(self):
         return "%s" % (self.name)
 
+    class Meta:
+        verbose_name_plural = 'Parties'
+
 SEX = (('M', 'MALE'), ('F', 'FEMALE'))
 
 class CustomUserManager(BaseUserManager):
