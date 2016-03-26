@@ -205,7 +205,7 @@ def result_count(request, level, id):
     flag = False
     if level=="state":
         line = "STATE LEVEL RESULT<br><br>"
-
+        state = State.objects.get(pk=id)
         if os.path.exists('voting_data/State'+str(id)+'/count'):
             lines = [l.rstrip('\n') for l in open('voting_data/State'+str(id)+'/count')]
             parties_with_votes = [l.split("\t") for l in lines]
@@ -215,11 +215,11 @@ def result_count(request, level, id):
             flag = True
     else:
         line  = "DISTRICT LEVEL RESULT<br><br>"
-
-        if os.path.exists('voting_data/Seat'+str(id)+'/count'):
-            lines = [l.rstrip('\n') for l in open('voting_data/Seat'+str(id)+'/count')]
+        seat = Seat.objects.get(pk=id)
+        if os.path.exists('voting_data/District'+str(id)+'/count'):
+            lines = [l.rstrip('\n') for l in open('voting_data/District'+str(id)+'/count')]
             parties_with_votes = [l.split("\t") for l in lines]
-            winner_count = max(parties_with_votes, key=operator.itemgetter(1))[0]
+            winner_count = max(parties_with_votes, key=operator.itemgetter(1))
             winner = winner_count[0]
             count = winner_count[1]
             line += "Winner for "+seat.name+" under "+seat.state.name+" is "+winner+" with count = "+str(count)+"<br>"
