@@ -29,11 +29,10 @@ class RegistrationForm(UserCreationForm):
     date_of_birth = forms.DateField(widget=forms.TextInput(attrs= {'class':'datepicker'}))
     sex = forms.ChoiceField(choices=(('M', 'MALE'), ('F', 'FEMALE')), label=_("Sex"))
     voter_id = forms.CharField(widget=forms.TextInput(attrs=dict(required=True, max_length=30)), label=_("Voter Id"))
-    is_election_staff = forms.BooleanField(initial=False, required=False)
 
     class Meta:
         model = CustomUser
-        fields = ['state', 'seat', 'booth', 'first_name', 'last_name', 'voter_id', 'date_of_birth', 'sex', 'is_election_staff']
+        fields = ['state', 'seat', 'booth', 'first_name', 'last_name', 'voter_id', 'date_of_birth', 'sex']
 
 
     def clean_username(self):
@@ -60,7 +59,6 @@ class RegistrationForm(UserCreationForm):
         user.date_of_birth = self.cleaned_data['date_of_birth']
         user.sex = self.cleaned_data['sex']
         user.voter_id = self.cleaned_data['voter_id']
-        user.is_election_staff = self.cleaned_data['is_election_staff']
         user.username = user.voter_id
         user.booth = self.cleaned_data['booth']
         # user.set_password(self.cleaned_data['password1'])
