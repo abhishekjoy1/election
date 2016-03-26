@@ -4,17 +4,17 @@ from models import *
 import operator
 @task()
 def seat_count(seat_id, state_id):
-    file_name = 'voting_data/State'+str(state_id)+"/seat"+'-'+str(seat_id)+".txt"
+    file_name = 'voting_data/State'+str(state_id)+"/district"+'-'+str(seat_id)+".txt"
     if os.path.exists(file_name):
         return True
-    hadoop_input_dir = 'voting_data/Seat'+str(seat_id)
+    hadoop_input_dir = 'voting_data/District'+str(seat_id)
     if not os.path.exists(hadoop_input_dir):
         return False
-    hadoop_output_dir = 'Result_Seat'+str(seat_id)
+    hadoop_output_dir = 'Result_District'+str(seat_id)
     cmd = "hadoop fs -put "+hadoop_input_dir+ " /user/joy/"
     flag = os.system(cmd)
     if not flag:
-        cmd = "hadoop jar VoteCount.jar "+ "/user/joy/Seat"+ str(seat_id) + " " + "/user/joy/"+hadoop_output_dir
+        cmd = "hadoop jar VoteCount.jar "+ "/user/joy/District"+ str(seat_id) + " " + "/user/joy/"+hadoop_output_dir
         flag = os.system(cmd)
         if not flag:
             cmd = "hadoop fs -ls /user/joy/"+hadoop_output_dir+'/part-r-00000'
