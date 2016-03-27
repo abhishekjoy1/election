@@ -127,10 +127,10 @@ def vote(request):
 
         party = Party.objects.get(id=request.POST['party_name'])
         party_name = party.name
-        num_seats_own = party.num_seats_won
-        num_seats_own += 1
-        party.num_seats_won = num_seats_own
-        party.save()
+        # num_seats_own = party.num_seats_won
+        # num_seats_own += 1
+        # party.num_seats_won = num_seats_own
+        # party.save()
 
         booth = user.booth
         seat_name = booth.seat.name
@@ -225,6 +225,7 @@ def result_count(request, level, id):
             line += "Winner for "+seat.name+" under "+seat.state.name+" is "+winner+" with count = "+str(count)+"<br>"
             flag = True
     if flag:
+        line += "<a href='/voting/home/'>Home</a>"
         return HttpResponse(line)
     return render_to_response(
         "result.html",
