@@ -186,8 +186,8 @@
                         $('#seat_id').hide();
                     }
                 });
-                if($('#level_id').val()=="seat"){
-                    $('#state_id').on('change', function() {
+                $('#state_id').on('change', function() {
+                    if($('#level_id').val()=="seat"){
                         $.ajax({
                             url: '/voting/api/seats/',
                             dataType: 'json',
@@ -201,8 +201,8 @@
 
                             }
                         });
-                    });
-                }
+                    }
+                });
             });
 
         </script>

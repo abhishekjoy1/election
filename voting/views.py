@@ -69,7 +69,7 @@ def add_state(request):
             else:
                 state = State.objects.get(pk=request.POST['state_id'])
                 state.delete()
-            return HttpResponseRedirect('/voting/home')
+            return HttpResponseRedirect('/voting/home/')
         except:
             error_message="Either input is invalid or a state with same name already exists!"
     return render_to_response('add_state.html', {'states' : State.objects.all(), 'error_message' : error_message}, context_instance=RequestContext(request))
@@ -90,7 +90,7 @@ def add_seat(request):
             else:
                 seat = Seat.objects.get(pk=request.POST['seat_id'])
                 seat.delete()
-            return HttpResponseRedirect('/voting/home')
+            return HttpResponseRedirect('/voting/home/')
         except:
             error_message="Either input is invalid or a seat with same name already exists!"
     return render_to_response('add_seat.html', {'states' : State.objects.all(), 'error_message' : error_message},
@@ -112,7 +112,7 @@ def add_booth(request):
             else:
                 booth = Booth.objects.get(pk=request.POST['booth_id'])
                 booth.delete()
-            return HttpResponseRedirect('/voting/home')
+            return HttpResponseRedirect('/voting/home/')
         except:
             error_message="Either input is invalid or a booth with same name already exists!"
     return render_to_response('add_booth.html', {'states': State.objects.all(), 'error_message' : error_message},
@@ -144,10 +144,10 @@ def vote(request):
         f.write(party_name+"\n")
         f.close()
 
-        return HttpResponseRedirect('/voting/home')
+        return HttpResponseRedirect('/voting/home/')
     user = request.user
     if user.casted_vote:
-        return HttpResponseRedirect('/voting/home')
+        return HttpResponseRedirect('/voting/home/')
     return render_to_response(
         'cast_vote.html',
         { 'user': request.user,
