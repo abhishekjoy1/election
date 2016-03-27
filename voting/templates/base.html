@@ -169,6 +169,7 @@
                     level= $(this).val();
                     if(level=="state"){
                         $('#seat').hide();
+                        $('#seat_id').empty().append('<option selected="selected" value="">Select a district</option>')
                         $('#seat_id').hide();
                         $('#state').show();
                         $('#state_id').show();
@@ -185,21 +186,23 @@
                         $('#seat_id').hide();
                     }
                 });
-                $('#state_id').on('change', function() {
-                    $.ajax({
-                        url: '/voting/api/seats/',
-                        dataType: 'json',
-                        type: 'GET',
-                        data: {state_id : $('#state_id').val()},
-                        success: function(data) {
-                            $('#seat_id').empty();
-                            for (row in data) {
-                                $('#seat_id').append($('<option></option>').attr('value', data[row].id).text(data[row].name));
-                            }
+                if($('#level_id').val()=="seat"){
+                    $('#state_id').on('change', function() {
+                        $.ajax({
+                            url: '/voting/api/seats/',
+                            dataType: 'json',
+                            type: 'GET',
+                            data: {state_id : $('#state_id').val()},
+                            success: function(data) {
+                                $('#seat_id').empty();
+                                for (row in data) {
+                                    $('#seat_id').append($('<option></option>').attr('value', data[row].id).text(data[row].name));
+                                }
 
-                        }
+                            }
+                        });
                     });
-                });
+                }
             });
 
         </script>
