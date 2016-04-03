@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-{% block title %}Add/Modify/Delete Seat{% endblock %}
-{% block head %}Add/Modify/Delete seat{% endblock %}
+{% block title %}Add/Modify/Delete district{% endblock %}
+{% block head %}Add/Modify/Delete district{% endblock %}
 {% block content %}
 <p><a href="/voting/home/">Home</a></p>
     {% if error_message %}
@@ -34,7 +34,7 @@
                  </select>
                 </td>
             </tr>
-            <tr><th><label for="seat_name" id="label_seat_name">Seat Name:</label></th>
+            <tr><th><label for="seat_name" id="label_seat_name">District Name:</label></th>
                 <td><input type="text" name="seat_name" id="seat_name"></td>
             </tr>
              <tr><td><input type="submit" value="Submit"></td></tr>

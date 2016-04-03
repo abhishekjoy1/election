@@ -125,6 +125,14 @@ def vote(request):
         user.casted_vote = True
         user.save()
 
+        seat = user.booth.state
+        seat.participated_in_voting = True
+        seat.save()
+
+        state = seat.state
+        state.participated_in_voting = True
+        state.save()
+
         party = Party.objects.get(id=request.POST['party_name'])
         party_name = party.name
         # num_seats_own = party.num_seats_won
@@ -197,8 +205,8 @@ def count_vote(request):
             from voting.tasks import state_count
             state_count.delay(state_id)
         return HttpResponseRedirect('/voting/result_count/'+level+'/'+str(id))
-    states = State.objects.all()
-    return render_to_response('count_votes.html', {'user': request.user,    'states':states},  context_instance=RequestContext(request))
+    states = State.objects.filter(participated_in_voting=True)
+    return render_to_response('count_votes.html', {'user': request.user, 'states':states},  context_instance=RequestContext(request))
 
 @login_required
 def result_count(request, level, id):

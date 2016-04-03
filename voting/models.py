@@ -12,6 +12,7 @@ class StateManager(models.Manager):
 class State(models.Model):
     name = models.CharField(max_length=200, unique=True)
     vote_counted = models.BooleanField(default=False)
+    participated_in_voting = models.BooleanField(default=False)
     objects = StateManager()
 
     def __str__(self):
@@ -21,7 +22,7 @@ class Seat(models.Model):
     name = models.CharField(max_length=200)
     state = models.ForeignKey(State)
     vote_counted = models.BooleanField(default=False)
-
+    participated_in_voting = models.BooleanField(default=False)
     class Meta:
         unique_together = ('state', 'name',)
 
