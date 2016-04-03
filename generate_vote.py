@@ -4,7 +4,7 @@ from random import randint
 from voting.models import *
 seats=Seat.objects.all()
 for seat in seats:
-            booths = seat.booth_set.all()
+            booths = seat.booth_set.all()   #get all the booths of each district
             for booth in booths:
                     file_name='voting_data/District'+str(seat.id)+'/booth-'+str(booth.id)+'.txt'
                     if not os.path.exists('voting_data/District'+str(seat.id)):

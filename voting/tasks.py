@@ -32,6 +32,8 @@ def seat_count(seat_id, state_id):#the task to run for a district under a state
 
             if not os.path.exists('voting_data/State'+str(state_id)): #check whether directory exists for corresponding state that is required as input for state level
                 os.mkdir('voting_data/State'+str(state_id))  #if not, create the directory
+
+
             f = open(file_name, 'a+' )   #open the output file that is required as input at state level in append mode
             f.write(winner+" 1"+"\n")
             f.close()
@@ -40,6 +42,9 @@ def seat_count(seat_id, state_id):#the task to run for a district under a state
 
 @task()
 def state_count(state_id):
+    file_name = 'voting_data/state'+str(state_id)+".txt" #if output already exists then hadoop will not run
+    if os.path.exists(file_name):
+        return True
     seat_ids = State.objects.get(pk=state_id).seat_set.all().values('id')
     for seat_id in seat_ids:
         seat_count(seat_id['id'], state_id)
