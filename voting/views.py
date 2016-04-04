@@ -125,7 +125,7 @@ def vote(request):
         user.casted_vote = True
         user.save()
 
-        seat = user.booth.state
+        seat = user.booth.seat
         seat.participated_in_voting = True
         seat.save()
 
