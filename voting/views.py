@@ -185,7 +185,7 @@ def count_vote(request):
     if request.method == 'POST':
         level=None
         id=None
-        if 'seat_id' in request.POST and request.POST['seat_id']:
+        if request.POST.get('level')=='seat' and 'seat_id' in request.POST and request.POST['seat_id']:
             seat_id = request.POST['seat_id']
             state_id = request.POST['state_id']
             level='seat'
@@ -195,7 +195,8 @@ def count_vote(request):
             seat.save()
             from voting.tasks import seat_count
             seat_count.delay(seat_id, state_id)
-        elif 'state_id' in request.POST:
+
+        elif request.POST.get('level')=='state' and 'state_id' in request.POST:
             state_id = request.POST['state_id']
             state = State.objects.get(pk=state_id)
             level='state'
@@ -204,6 +205,11 @@ def count_vote(request):
             state.save()
             from voting.tasks import state_count
             state_count.delay(state_id)
+        else:
+            level='country'
+            id=0
+            from voting.tasks import country_count
+            country_count.delay()
         return HttpResponseRedirect('/voting/result_count/'+level+'/'+str(id))
     states = State.objects.filter(participated_in_voting=True)
     return render_to_response('count_votes.html', {'user': request.user, 'states':states},  context_instance=RequestContext(request))
@@ -221,7 +227,7 @@ def result_count(request, level, id):
 
             line += "Winner for "+state.name+" is "+winner+"<br>"
             flag = True
-    else:
+    elif level=="seat":
         line  = "DISTRICT LEVEL RESULT<br><br>"
         seat = Seat.objects.get(pk=id)
         if os.path.exists('voting_data/District'+str(id)+'/count'):
@@ -231,6 +237,15 @@ def result_count(request, level, id):
             winner = winner_count[0]
             count = winner_count[1]
             line += "Winner for "+seat.name+" under "+seat.state.name+" is "+winner+" with count = "+str(count)+"<br>"
+            flag = True
+    else:
+        line  = "COUNTRY LEVEL RESULT<br><br>"
+        if os.path.exists('voting_data/Country/count'):
+            lines = [l.rstrip('\n') for l in open('voting_data/Country/count')]
+            parties_with_votes = [l.split("\t") for l in lines]
+            winner = max(parties_with_votes, key=operator.itemgetter(1))[0]
+
+            line += "Winner for country is "+winner+"<br>"
             flag = True
     if flag:
         line += "<a href='/voting/home/'>Home</a>"
