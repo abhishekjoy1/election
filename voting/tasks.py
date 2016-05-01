@@ -21,6 +21,8 @@ def seat_count(seat_id, state_id):#the task to run for a district under a state
             flag = os.system(cmd)
             while(flag): #keep on looping until the output file is generated
                 flag = os.system(cmd)
+            if os.path.exists(hadoop_input_dir+'/count'):
+                os.remove(hadoop_input_dir+'/count')
             cmd = "hadoop fs -get /user/joy/"+hadoop_output_dir+"/part-r-00000 "+hadoop_input_dir+'/count' #command to copy the output directory from hdfs to local file system
             os.system(cmd)
 
@@ -63,6 +65,8 @@ def state_count(state_id):
             flag = os.system(cmd)
             while(flag): #keep on looping until the output file is generated
                 flag = os.system(cmd)
+            if os.path.exists(hadoop_input_dir+'/count'):
+                os.remove(hadoop_input_dir+'/count')
             cmd = "hadoop fs -get /user/joy/"+hadoop_output_dir+"/part-r-00000 "+hadoop_input_dir+'/count' #command to copy the output directory from hdfs to local file system
 
             os.system(cmd)
@@ -101,6 +105,8 @@ def country_count():
             flag = os.system(cmd)
             while(flag): #keep on looping until the output file is generated
                 flag = os.system(cmd)
+            if os.path.exists(hadoop_input_dir+'/count'):
+                os.remove(hadoop_input_dir+'/count')
             cmd = "hadoop fs -get /user/joy/"+hadoop_output_dir+"/part-r-00000 "+hadoop_input_dir+'/count' #command to copy the output directory from hdfs to local file system
 
             os.system(cmd)

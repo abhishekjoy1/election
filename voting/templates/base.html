@@ -207,7 +207,8 @@
 
         </script>
     </head>
-    <body>
+    <body style="background-image: url({%load static%}{% static "vote.jpeg" %});background-repeat: no-repeat;
+    background-position: center;background-size: 100%;">
         <h1>{% block head %}{% endblock %}</h1>
         {% block content %}{% endblock %}
 

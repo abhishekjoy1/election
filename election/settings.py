@@ -132,6 +132,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
+STATIC_ROOT ='/Users/joy/election/voting/static'
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'voting.CustomUser'

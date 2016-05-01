@@ -10,7 +10,7 @@ for seat in seats:
                     if not os.path.exists('voting_data/District'+str(seat.id)):
                         os.mkdir('voting_data/District'+str(seat.id))
                     i=1
-                    while i<=10:
+                    while i<=100:
                            parties=Party.objects.all().values('name')
                            index=randint(0,len(parties)-1)
                            party_name=parties[index]['name']
